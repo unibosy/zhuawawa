@@ -1,0 +1,55 @@
+#pragma once
+
+#include <sys/types.h>
+#include <unistd.h>
+
+#include <sstream>
+
+#include "base/log.h"
+
+namespace agora {
+namespace base {
+class safe_log {
+ public:
+  safe_log(const char *file, int line, int severity);
+  safe_log(const char* logdir, const char *file, int line, int severity);
+  ~safe_log();
+
+  std::ostream& stream();
+ private:
+  int severity_;
+  std::ostringstream sout_;
+  const char *logdir_;
+};
+
+inline safe_log::safe_log(const char *file, int line, int severity) {
+  logdir_ = NULL;
+  severity_ = severity;
+  sout_ << file << ":" << line << ": ";
+}
+
+inline safe_log::safe_log(const char* logdir, const char *file, int line, int severity) {
+  logdir_ = logdir;
+  severity_ = severity;
+  sout_ << file << ":" << line << ": ";
+}
+
+inline safe_log::~safe_log() {
+  typedef agora::base::log_levels severity_t;
+  severity_t severity = static_cast<severity_t>(severity_);
+  agora::base::log_dir(logdir_, severity, "(%d) %s", getpid(), sout_.str().c_str());
+}
+
+inline std::ostream& safe_log::stream() {
+  return sout_;
+}
+
+}
+}
+
+#define SAFE_LOG(level) agora::base::safe_log(__FILE__, __LINE__, \
+    agora::base::log_levels::level ## _LOG).stream()
+
+#define SAFE_LOG_DIR(logdir, level) agora::base::safe_log(logdir, __FILE__, __LINE__, \
+    agora::base::log_levels::level ## _LOG).stream()
+
