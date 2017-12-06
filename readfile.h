@@ -28,13 +28,19 @@ public:
   std::string getWidth(){return m_width;}
 
   void setHeight(std::string& height){m_height = height;}
-  std::string getHeight(){m_height;}
+  std::string getHeight(){return m_height;}
 
   void setFPS(std::string& fps){m_fps = fps;}
   std::string getFPS(){return m_fps;}
 
   void setBitrate(std::string& bitrate){m_bitrate = bitrate;}
   std::string getBitrate(){return m_bitrate;}
+
+  void setChannelKey(std::string& channelKey){m_channelKey = channelKey;}
+  std::string getChannelKey(){return m_channelKey;}
+
+  void setCameraId(std::string& cameraId){m_cameraId = cameraId;}
+  std::string getCameraId(){return m_cameraId;}
 
 private:
   std::string m_appid;
@@ -46,4 +52,6 @@ private:
   std::string m_fps;
   std::string m_bitrate;
   std::string m_filepath;
+  std::string m_channelKey;
+  std::string m_cameraId;
 };

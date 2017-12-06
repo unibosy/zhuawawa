@@ -17,17 +17,12 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     readfile.cpp \
-    avengine.cpp \
-    enginehandler.cpp \
     widget.cpp
 
 INCLUDEPATH += sdk/include/internal/
 
 HEADERS  += mainwindow.h \
     readfile.h \
-    avengine.h \
-    internal.h \
-    enginehandler.h \
     widget.h
 
 FORMS    += mainwindow.ui

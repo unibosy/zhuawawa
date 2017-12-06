@@ -4,18 +4,22 @@
 #include <fstream>
 #include <cstring>
 
+#include <QDebug>
+
 #define APPID "APPID="
 #define UID "UID="
+#define CHANNELKEY "CHANNELKEY="
 #define WIDTH "WIDTH="
 #define HEIGHT "HEIGHT="
 #define FPS "FPS="
 #define BITRATE "BITRATE="
 #define CHANNEL "CHANNEL="
 #define LIVE "LIVE="
+#define CAMERAID "CAMERAID="
 
 
 ReadConfig::ReadConfig(std::string& filepath) :m_appid(""), m_uid(""), m_width(""),m_height(""),m_fps(""),m_bitrate(""),
-    m_live("0"),m_channel("")
+    m_live("1"),m_channel("")
 {
   m_filepath = filepath;
 }
@@ -29,7 +33,8 @@ void ReadConfig::readText()
   std::string line = "";
 
   std::ifstream file;
-  file.open(m_filepath);
+  file.open("config.ini");
+  qDebug()<<"111,m_filepath:"<<m_filepath.c_str()<<endl;
   if (file.is_open())
   {
     while (getline(file, line))
@@ -90,6 +95,20 @@ void ReadConfig::readText()
         size_t live_pos = line.find("=");
         live = line.substr(live_pos + 1, strlen(line.c_str()) - live_pos + 1);
         setLive(live);
+      }
+      else if (!strncmp(line.c_str(), CHANNELKEY,strlen(CHANNELKEY)))
+      {
+        std::string ck = "";
+        size_t ck_pos = line.find("=");
+        ck = line.substr(ck_pos + 1, strlen(line.c_str()) - ck_pos + 1);
+        setChannelKey(ck);
+      }
+      else if (!strncmp(line.c_str(), CAMERAID,strlen(CAMERAID)))
+      {
+        std::string cameraId = "";
+        size_t cameraId_pos = line.find("=");
+        cameraId = line.substr(cameraId_pos + 1, strlen(line.c_str()) - cameraId_pos + 1);
+        setCameraId(cameraId);
       }
     }
   }
